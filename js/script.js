@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- Discord Visitor Notification ---
     (function () {
-        var WEBHOOK = 'https://discord.com/api/webhooks/1499925704110768221/VEmZrUxkmeCEIZsXCwgt43A9u7EoA3UygmxQhIMuCxNMqi-BYqo1Lfw_yadbD6Vwsk5C';
+        var WEBHOOK = 'https://portfolio-tracker.ashraflahbib365.workers.dev/';
 
         function getDeviceInfo() {
             var ua = navigator.userAgent;
