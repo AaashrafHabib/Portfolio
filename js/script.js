@@ -1,144 +1,206 @@
-// htmlcss progress circular bar 
-let htmlProgress = document.querySelector(".html-css"),
-  htmlValue = document.querySelector(".html-progress");
-  
-let htmlStartValue = 0,
-  htmlEndValue = 90,
-  htmlspeed = 30;
+document.addEventListener('DOMContentLoaded', function () {
 
-let progresshtml = setInterval(() => {
-  htmlStartValue++;
+    // --- Discord Visitor Notification ---
+    (function () {
+        var WEBHOOK = 'https://discord.com/api/webhooks/1499925704110768221/VEmZrUxkmeCEIZsXCwgt43A9u7EoA3UygmxQhIMuCxNMqi-BYqo1Lfw_yadbD6Vwsk5C';
 
-  htmlValue.textContent = `${htmlStartValue}%`;
-  htmlProgress.style.background = `conic-gradient(#fca61f ${
-    htmlStartValue * 3.6
-  }deg, #ededed 0deg)`;
+        function getDeviceInfo() {
+            var ua = navigator.userAgent;
+            var mobile = /Mobile|Android|iPhone|iPad/i.test(ua);
+            var os = 'Unknown OS';
+            if (/Windows/i.test(ua)) os = 'Windows';
+            else if (/Mac/i.test(ua)) os = 'macOS';
+            else if (/Linux/i.test(ua)) os = 'Linux';
+            else if (/Android/i.test(ua)) os = 'Android';
+            else if (/iPhone|iPad/i.test(ua)) os = 'iOS';
 
-  if (htmlStartValue == htmlEndValue) {
-    clearInterval(progresshtml);
-  }
-}, htmlspeed);
+            var browser = 'Unknown Browser';
+            if (/Edg\//i.test(ua)) browser = 'Edge';
+            else if (/Chrome/i.test(ua)) browser = 'Chrome';
+            else if (/Firefox/i.test(ua)) browser = 'Firefox';
+            else if (/Safari/i.test(ua)) browser = 'Safari';
 
-// javasript progress circular bar 
-let javascriptProgress = document.querySelector(".javascript"),
-  javascriptValue = document.querySelector(".javascript-progress");
+            return { device: mobile ? 'Mobile' : 'Desktop', os: os, browser: browser };
+        }
 
-let javascriptStartValue = 0,
-  javascriptEndValue = 75,
-  jsspeed = 30;
+        fetch('https://ipapi.co/json/')
+            .then(function (r) { return r.json(); })
+            .then(function (geo) {
+                var info = getDeviceInfo();
+                var referrer = document.referrer || 'Direct';
+                var now = new Date().toLocaleString('en-GB', { timeZone: 'Europe/Paris' });
 
-let progressjs = setInterval(() => {
-  javascriptStartValue++;
+                var embed = {
+                    embeds: [{
+                        title: '🔔 New Portfolio Visitor',
+                        color: 2456831,
+                        fields: [
+                            { name: '🌍 Location', value: (geo.city || '?') + ', ' + (geo.region || '') + ', ' + (geo.country_name || '?'), inline: true },
+                            { name: '🏢 IP', value: geo.ip || '?', inline: true },
+                            { name: '🏷️ ISP / Org', value: geo.org || '?', inline: false },
+                            { name: '💻 Device', value: info.device + ' — ' + info.os + ' / ' + info.browser, inline: true },
+                            { name: '🔗 Referrer', value: referrer, inline: true },
+                            { name: '🕐 Time (Paris)', value: now, inline: false }
+                        ],
+                        footer: { text: 'Portfolio Visitor Tracker' }
+                    }]
+                };
 
-  javascriptValue.textContent = `${javascriptStartValue}%`;
-  javascriptProgress.style.background = `conic-gradient(#7d2ae8 ${
-    javascriptStartValue * 3.6
-  }deg, #ededed 0deg)`;
+                fetch(WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(embed)
+                });
+            })
+            .catch(function () {});
+    })();
 
-  if (javascriptStartValue == javascriptEndValue) {
-    clearInterval(progressjs);
-  }
-}, jsspeed);
+    // --- AOS Initialization ---
+    AOS.init({
+        duration: 800,
+        offset: 50,
+        once: true,
+    });
 
-// php progress circular bar 
-let phpProgress = document.querySelector(".php"),
-  phpValue = document.querySelector(".php-progress");
+    // --- Typing Effect ---
+    var titles = ['AI Engineer', 'Multi-Agent Systems', 'AWS & Cloud Architecture', 'MLOps & DevOps', 'LLM Specialist'];
+    var titleIndex = 0;
+    var charIndex = 0;
+    var isDeleting = false;
+    var typedEl = document.getElementById('typed-text');
 
-let phpStartValue = 0,
-  phpEndValue = 80,
-  phpspeed = 30;
+    function type() {
+        var current = titles[titleIndex];
+        if (isDeleting) {
+            typedEl.textContent = current.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            typedEl.textContent = current.substring(0, charIndex + 1);
+            charIndex++;
+        }
 
-let progressphp = setInterval(() => {
-  phpStartValue++;
+        var speed = isDeleting ? 30 : 80;
 
-  phpValue.textContent = `${phpStartValue}%`;
-  phpProgress.style.background = `conic-gradient(#20c997 ${
-    phpStartValue * 3.6
-  }deg, #ededed 0deg)`;
+        if (!isDeleting && charIndex === current.length) {
+            speed = 2000;
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            titleIndex = (titleIndex + 1) % titles.length;
+            speed = 500;
+        }
 
-  if (phpStartValue == phpEndValue) {
-    clearInterval(progressphp);
-  }
-}, phpspeed);
-
-// reactjs progress circular bar 
-let reactProgress = document.querySelector(".reactjs"),
-  reactValue = document.querySelector(".reactjs-progress");
-
-let reactStartValue = 0,
-  reactEndValue = 30,
-  rjsspeed = 30;
-
-let progressreact = setInterval(() => {
-  reactStartValue++;
-
-  reactValue.textContent = `${reactStartValue}%`;
-  reactProgress.style.background = `conic-gradient(#3f396d ${
-    reactStartValue * 3.6
-  }deg, #ededed 0deg)`;
-
-  if (reactStartValue == reactEndValue) {
-    clearInterval(progressreact);
-  }
-}, rjsspeed);
-
-
-// filter using javascript
-$(document).ready(function () {
-  $(".filter-item").click(function () {
-    const value = $(this).attr("data-filter");
-    if (value == "all") {
-      $(".post").show("1000");
-    } else {
-      $(".post")
-        .not("." + value)
-        .hide("1000");
-      $(".post")
-        .filter("." + value)
-        .show("1000");
+        setTimeout(type, speed);
     }
-  });
-});
 
+    if (typedEl) type();
 
-// javascript for sticky navbar even if u scroll the navbar will be fixed
-document.addEventListener("DOMContentLoaded", function(){
-  window.addEventListener('scroll', function() {
-      if (window.scrollY > 50) {
-        document.getElementById('navbar-top').classList.add('fixed-top');
-        // add padding top to show content behind navbar
-        navbar_height = document.querySelector('.navbar').offsetHeight;
-        document.body.style.paddingTop = navbar_height + 'px';
-      } else {
-        document.getElementById('navbar-top').classList.remove('fixed-top');
-         // remove padding top from body
-        document.body.style.paddingTop = '0';
-      } 
-  });
-}); 
+    // --- Navbar Scroll Effect ---
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
 
+    // --- Mobile Nav Toggle ---
+    var navToggle = document.getElementById('nav-toggle');
+    var navLinks = document.getElementById('nav-links');
 
-// adding funtionality to back to top button 
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', function () {
+            navLinks.classList.toggle('active');
+            var icon = navToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.className = 'bi bi-x-lg';
+            } else {
+                icon.className = 'bi bi-list';
+            }
+        });
 
-//Get the button
-let mybutton = document.getElementById("btn-back-to-top");
+        navLinks.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                navLinks.classList.remove('active');
+                var icon = navToggle.querySelector('i');
+                icon.className = 'bi bi-list';
+            });
+        });
+    }
 
-// When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function () {
-  scrollFunction();
-};
-function scrollFunction() {
-  if (
-    document.body.scrollTop > 20 ||
-    document.documentElement.scrollTop > 20
-  ) {
-    mybutton.style.display = "block";
-  } else {
-    mybutton.style.display = "none";
-  }
-}
-// When the user clicks on the button, scroll to the top of the document
-mybutton.addEventListener("click",function(){
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+    // --- Back to Top ---
+    var backToTop = document.getElementById('btn-back-to-top');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+
+    backToTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // --- Modal ---
+    document.querySelectorAll('[data-modal]').forEach(function (trigger) {
+        trigger.addEventListener('click', function (e) {
+            e.preventDefault();
+            var modalId = this.getAttribute('data-modal');
+            var modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+
+    document.querySelectorAll('.modal-close').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            this.closest('.modal-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+        overlay.addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+
+    // --- Active Nav Link on Scroll ---
+    var sections = document.querySelectorAll('section[id]');
+    function updateActiveNav() {
+        var scrollY = window.scrollY + 120;
+        sections.forEach(function (section) {
+            var top = section.offsetTop;
+            var height = section.offsetHeight;
+            var id = section.getAttribute('id');
+            var link = document.querySelector('.nav-links a[href="#' + id + '"]');
+            if (link) {
+                if (scrollY >= top && scrollY < top + height) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            }
+        });
+    }
+
+    window.addEventListener('scroll', updateActiveNav);
+    updateActiveNav();
+
+    // --- Close modal on Escape key ---
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.active').forEach(function (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+    });
 });
